@@ -41,6 +41,6 @@ function doIt() {
 
     });
 
-})
+}
 
 doIt();
