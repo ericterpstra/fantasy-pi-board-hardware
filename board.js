@@ -15,10 +15,11 @@ lcd.init()
 
 setInterval(function() {
     request('http://terpstra.co:3000/board', function (error, response, body) {
+        console.log(response);
         if (!error && response.statusCode == 200) {
             console.log(response); // Show the HTML for the Google homepage.
+            servo.setDegree(angle);
+            lcd.clear().then(() => lcd.print(angle.toString()));
         }
     });
-    servo.setDegree(angle);
-    lcd.clear().then(() => lcd.print(angle.toString()));
 }, 5000);
