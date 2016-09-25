@@ -17,7 +17,7 @@ var data = {
     angle: 90
 };
 
-setInterval(function() {
+function doIt() {
 
     console.log('Getting Data...');
 
@@ -31,12 +31,16 @@ setInterval(function() {
 
             servo.setDegree(data.angle);
 
-            lcd.clear()
+            lcd.setCursor(0,0)
                 .then(() => lcd.print( data.lcd1 ))
                 .then(() => lcd.setCursor(0, 1))
                 .then(() => lcd.print( data.lcd2 ))
+                .delay(5000)
+                .then(() => doIt())
         }
 
     });
 
-}, 5000);
+})
+
+doIt();
