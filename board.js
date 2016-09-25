@@ -5,21 +5,38 @@ var request = require('request');
 var servo = new PiServo(4);
 var lcd = new LCD("/dev/i2c-1", 0x27);
 
-var angle = 30;
-
 servo.open();
 
 lcd.init()
     .then(() => lcd.home())
     .then(() => lcd.print('Starting Test...'));
 
+var data = {
+    lcd1: "line1",
+    lcd2: "line2",
+    angle: 90
+};
+
 setInterval(function() {
+
+    console.log('Getting Data...');
+
     request('http://terpstra.co:3000/board', function (error, response, body) {
-        console.log(response);
+
         if (!error && response.statusCode == 200) {
-            console.log(response); // Show the HTML for the Google homepage.
-            servo.setDegree(angle);
-            lcd.clear().then(() => lcd.print(angle.toString()));
+
+            console.log(response.body);
+
+            data = JSON.parse(response.body);
+
+            servo.setDegree(data.angle);
+
+            lcd.clear()
+                .then(() => lcd.print( data.lcd1 ))
+                .then(() => lcd.setCursor(0, 1))
+                .then(() => lcd.print( data.lcd2 ))
         }
+
     });
+
 }, 5000);
